@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tawsil/core/models/package_model.dart';
 import 'package:tawsil/service/getdata.dart';
@@ -44,7 +45,7 @@ class _SearchPageState extends State<SearchPage> {
               title: const Text('Search for package'),
               onTap: () {
                 // Handle Home item tap
-                Navigator.pop(context); // Close the drawer
+                Get.back();
               },
             ),
             ListTile(
@@ -53,10 +54,7 @@ class _SearchPageState extends State<SearchPage> {
               onTap: () {
                 // Handle Settings item tap
 
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const AddModifyPackage()));
+                Get.to(() => const AddModifyPackage());
               },
             ),
           ],
@@ -83,10 +81,10 @@ class _SearchPageState extends State<SearchPage> {
                 ],
               ),
             ),
-            Align(
+            const Align(
               alignment: Alignment
                   .centerRight, // This aligns the CircleAvatar to the right
-              child: const CircleAvatar(
+              child: CircleAvatar(
                 backgroundImage: AssetImage("images/man.png"),
               ),
             ),
@@ -171,7 +169,7 @@ class _SearchPageState extends State<SearchPage> {
               child: lastTime == null
                   ? const SizedBox(
                       width: double.infinity,
-                      child: Text("Search for a package "))
+                      child: Center(child: Text("No data available")))
                   : ListView.builder(
                       itemCount: 1,
                       itemBuilder: (BuildContext context, int index) {
@@ -183,12 +181,9 @@ class _SearchPageState extends State<SearchPage> {
                           onTap: () async {
                             Package? package =
                                 await GetData().getPackage(lastTime!.id!);
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => PackageDetails(
-                                  package: package,
-                                ),
+                            Get.to(
+                              () => PackageDetails(
+                                package: package,
                               ),
                             );
                           },

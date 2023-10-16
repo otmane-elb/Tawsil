@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tawsil/service/getdata.dart';
 import 'package:tawsil/utils/dropdown_textfield.dart';
+import 'package:tawsil/views/page/search_page.dart';
 
 import '../../core/models/package_model.dart';
 import '../widgets/one_status.dart';
@@ -26,10 +28,9 @@ class _AddModifyPackageState extends State<AddModifyPackage> {
           padding: EdgeInsets.zero,
           children: <Widget>[
             // Drawer Header
-            DrawerHeader(
+            const DrawerHeader(
               decoration: BoxDecoration(
-                
-                color: const Color.fromARGB(255, 158, 66, 59),
+                color: Color.fromARGB(255, 158, 66, 59),
               ),
               child: Text(
                 'My App Drawer',
@@ -41,19 +42,19 @@ class _AddModifyPackageState extends State<AddModifyPackage> {
             ),
             // Drawer Items
             ListTile(
-              leading: Icon(Icons.search),
-              title: Text('Search for package'),
+              leading: const Icon(Icons.search),
+              title: const Text('Search for package'),
               onTap: () {
                 // Handle Home item tap
-                Navigator.pop(context); // Close the drawer
+                Get.to(() => const SearchPage());
               },
             ),
             ListTile(
-              leading: Icon(Icons.settings),
-              title: Text('Settings'),
+              leading: const Icon(Icons.settings),
+              title: const Text('Settings'),
               onTap: () {
                 // Handle Settings item tap
-                Navigator.pop(context); // Close the drawer
+                Get.back();
               },
             ),
           ],
@@ -82,10 +83,7 @@ class _AddModifyPackageState extends State<AddModifyPackage> {
             ),
             GestureDetector(
               onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const AddModifyPackage()));
+                Get.to(() =>const AddModifyPackage());
               },
               child: const CircleAvatar(
                 backgroundImage: AssetImage("images/man.png"),
@@ -204,7 +202,7 @@ class _AddModifyPackageState extends State<AddModifyPackage> {
                   ),
                   Expanded(
                     child: package == null
-                        ? Center(
+                        ? const Center(
                             child: Text(
                                 "No data available"), // Replace with your empty state widget
                           )

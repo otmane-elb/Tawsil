@@ -55,7 +55,7 @@ class MyTextFieldWithOptionsState extends State<MyTextFieldWithOptions> {
             GetData().addPacakge(
                 widget.packageId.text, _selectedOption, widget.city.text);
           },
-          child: Text('Submit'),
+          child: const Text('Submit'),
         ),
       ],
     );

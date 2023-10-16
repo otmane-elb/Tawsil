@@ -21,7 +21,7 @@ class DeliveryStatusWidget extends StatelessWidget {
           child: Row(
             children: [
               getIconForStatus(status),
-              SizedBox(
+              const SizedBox(
                 width: 10,
               ),
               Text(

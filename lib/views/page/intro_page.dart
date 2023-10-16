@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tawsil/views/page/search_page.dart';
 import 'package:tawsil/views/widgets/button.dart';
 
 class IntroPage extends StatelessWidget {
@@ -53,7 +55,7 @@ class IntroPage extends StatelessWidget {
               CButton(
                 text: "Get started",
                 onTap: () {
-                  Navigator.pushNamed(context, '/menupage');
+                  Get.to(() =>const SearchPage());
                 },
               )
             ]),

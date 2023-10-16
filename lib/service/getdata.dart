@@ -7,18 +7,20 @@ import 'package:get/get.dart';
 import '../core/models/lasttime.dart';
 
 class GetData {
-  // Access a child of the current reference
   Future<LastTime?> getPackagelastupdate(String packageId) async {
+    // Access the desired package
     DatabaseReference ref =
         FirebaseDatabase.instance.ref("/Tawsil/Pacakges/$packageId");
 
     try {
       DatabaseEvent event = await ref.once();
+      //check if it's a valid ID
       if (event.snapshot.exists) {
         Map<String, dynamic> data =
             jsonDecode(jsonEncode(event.snapshot.value));
 
         List<String> keys = data.keys.toList();
+        // sort the delivery statuses by date 
         keys.sort((a, b) =>
             DateFormat('dd/MM/yyyy HH:mm').parse(data[b]['Time']).compareTo(
                   DateFormat('dd/MM/yyyy HH:mm').parse(data[a]['Time']),
@@ -44,7 +46,7 @@ class GetData {
         return null;
       }
     } catch (e) {
-      // Handle any errors, e.g., network errors, Firebase exceptions, etc.
+// Errors other then not found
       print('Error: $e');
       return null;
     }
@@ -53,28 +55,36 @@ class GetData {
   Future<Package?> getPackage(String packageId) async {
     DatabaseReference ref =
         FirebaseDatabase.instance.ref("/Tawsil/Pacakges/$packageId");
-    DatabaseEvent event = await ref.once();
+    try {
+      DatabaseEvent event = await ref.once();
+      if (event.snapshot.exists) {
+        Map<String, dynamic> data =
+            jsonDecode(jsonEncode(event.snapshot.value));
 
-    Map<String, dynamic> data = jsonDecode(jsonEncode(event.snapshot.value));
+        // Extract the keys and sort them in descending order
+        List<String> keys = data.keys.toList();
+        keys.sort((a, b) => DateFormat('dd/MM/yyyy HH:mm')
+            .parse(data[a]['Time'])
+            .compareTo(DateFormat('dd/MM/yyyy HH:mm').parse(data[b]['Time'])));
 
-    // Extract the keys and sort them in descending order
-    List<String> keys = data.keys.toList();
-    keys.sort((a, b) => DateFormat('dd/MM/yyyy HH:mm')
-        .parse(data[a]['Time'])
-        .compareTo(DateFormat('dd/MM/yyyy HH:mm').parse(data[b]['Time'])));
+        // Create a new Map with sorted data
+        Map<String, dynamic> sortedData = {};
+        for (var key in keys) {
+          sortedData[key] = data[key];
+        }
 
-    // Create a new Map with sorted data
-    Map<String, dynamic> sortedData = {};
-    keys.forEach((key) {
-      sortedData[key] = data[key];
-    });
-
-    Package package = Package.fromJson(packageId, sortedData);
-    print('this is id :${package.id}');
-    package.statuses.forEach((key, value) {
-      print('$key: $value');
-    });
-    return package;
+        Package package = Package.fromJson(packageId, sortedData);
+        print('this is id :${package.id}');
+        package.statuses.forEach((key, value) {
+          print('$key: $value');
+        });
+        return package;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
   }
 
   addPacakge(String packageId, String status, String city) {

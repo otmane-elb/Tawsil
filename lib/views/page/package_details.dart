@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tawsil/core/models/package_model.dart';
 import 'package:tawsil/views/widgets/one_status.dart';
@@ -21,7 +22,7 @@ class PackageDetails extends StatelessWidget {
             children: [
               IconButton(
                   onPressed: () {
-                    Navigator.pop(context);
+                    Get.back();
                   },
                   icon: const Icon(Icons.arrow_back)),
               Column(
